@@ -1,5 +1,5 @@
 
-#CREACION DE LA tde_matricula_especial
+#Creacion de nuestra tabla de entrada  tde_matricula_especial de matriculas especiales. (raw)
 
 CREATE TABLE tde_matricula_especial (
     marca_temporal VARCHAR(255),
@@ -26,8 +26,8 @@ CREATE TABLE tde_matricula_especial (
     flag_reunion VARCHAR(255)
 );
 
-#CREACION DE LA tpm_matricula_especial
-select*from tpm_matricula_especial;
+#Tabla tpm_matricula_especial. (Silver)
+
 CREATE TABLE tpm_matricula_especial AS
 SELECT
     STR_TO_DATE(marca_temporal, '%d/%m/%Y %H:%i:%s') AS d_marca_temporal,
@@ -54,7 +54,7 @@ SELECT
     UPPER(flag_reunion) AS s_flag_reunion
 FROM tde_matricula_especial;
 
-#CREACION DE LA tde_matricula_ordinaria
+#Creacion de nuestra tabla de entrada  tde_matricula_ordinaria de matriculas ordinarias. (raw)
 
 CREATE TABLE tde_matricula_ordinaria (
     marca_temporal VARCHAR(255),
@@ -80,7 +80,7 @@ CREATE TABLE tde_matricula_ordinaria (
     flag_reunion VARCHAR(255)
 );
 
-#CREACION DE LA tpm_matricula_ordinaria
+#Tabla tpm_matricula_ordinaria. (Silver)
 
 CREATE TABLE tpm_matricula_ordinaria AS
 SELECT
@@ -107,12 +107,7 @@ SELECT
     UPPER(flag_reunion) AS s_flag_reunion
 FROM tde_matricula_ordinaria;
 
-
-#tpm_matricula_ordinaria y tpm_matricula_especial creadas
-
-select*from tpm_matricula_ordinaria;
-
-#CREAMOS TEMPORAL t$_matriculados_ordinario_1
+#Creamos la temporal t$_matriculados_ordinario_1 de nuestro tpm_matricula_ordinaria.
 
     CREATE TABLE t$_matriculados_ordinario_1 AS
         SELECT
@@ -137,8 +132,7 @@ select*from tpm_matricula_ordinaria;
             s_flag_reunion
         FROM tpm_matricula_ordinaria;
 
-
-#CREAMOS TEMPORAL t$_matriculados_especial_1
+#Creamos nuestra temporal t$_matriculados_especial_1 de nuestro tpm_matricula_especial.
 
 CREATE TABLE t$_matriculados_especial_1 AS
     SELECT
@@ -165,8 +159,8 @@ CREATE TABLE t$_matriculados_especial_1 AS
     FROM tpm_matricula_especial;
 
 
-# JOIN DEL t$_matriculados_especial_1, t$_matriculados_ordinario_1 CON EL t$_reuniones_zoom_2
-select*from t$_matriculados_2;
+# Usamos un left join de t$_reuniones_zoom_2 con respecto a _matriculados_especial_1 y t$_matriculados_ordinario_1.
+
     CREATE TABLE t$_matriculados_2 AS (
         SELECT
             tr2.s_periodo,
@@ -198,7 +192,8 @@ select*from t$_matriculados_2;
             ON tr2.s_correo_usuario = tmo1.s_correo_usuario
     );
 
-#CREACION DE TEM DE PRUEBA
+#Creacion de nuestra tem_reuniones_PRUEBA (Gold)
+    
         create table tem_reuniones_PRUEBA
     (
         s_periodo            varchar(6) charset utf8mb4              null,
@@ -221,7 +216,8 @@ select*from t$_matriculados_2;
         s_estado_usuario     varchar(17) charset utf8mb4             null,
         d_fec_carga          datetime                                not null
     );
-#INSERCION DE DATOS A LA TEM
+
+#Ingesta a la tabla tem_reuniones_PRUEBA (Gold)
 
        INSERT INTO tem_reuniones_PRUEBA (
         s_periodo,
